@@ -1,0 +1,21 @@
+server:
+  port: ${TIANTAN_GATEWAY_PORT:8080}
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  webflux:
+    multipart:
+      file-storage-directory: ${TIANTAN_STORAGE_TEMP:/epfs/TianTanSystem/tmp}/gateway
+  cloud:
+    gateway:
+      routes:
+        - id: data-service
+          uri: ${TIANTAN_DATA_SERVICE_URL:http://127.0.0.1:8081}
+          predicates:
+            - Path=/api/data/**
+        - id: scheduling-service
+          uri: ${TIANTAN_SCHEDULING_SERVICE_URL:http://127.0.0.1:8083}
+          predicates:
+            - Path=/api/scheduling/**

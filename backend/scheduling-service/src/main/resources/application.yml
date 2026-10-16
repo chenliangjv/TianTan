@@ -1,0 +1,13 @@
+server:
+  port: ${TIANTAN_SCHEDULING_PORT:8083}
+
+spring:
+  application:
+    name: scheduling-service
+  cloud:
+    openfeign:
+      client:
+        config:
+          data-service:
+            connectTimeout: 10000
+            readTimeout: 30000

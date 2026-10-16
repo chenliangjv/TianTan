@@ -1,0 +1,65 @@
+# Track the application and project documentation at the workspace root.
+/*
+!/.gitignore
+!/*.md
+!/frontend/
+!/backend/
+
+# Dependencies, caches, and build output.
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+.vite/
+.cache/
+dist/
+build/
+target/
+coverage/
+*.tsbuildinfo
+*.class
+*.jar
+*.war
+
+# IDE and operating system files.
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Runtime files, uploaded data, and generated gateway frontend assets.
+logs/
+*.log
+*.pid
+tmp/
+temp/
+/backend/data-storage/
+/backend/gateway-service/src/main/resources/static/
+test-results/
+playwright-report/
+
+# Local credentials and environment overrides.
+.env
+.env.*
+!.env.example
+!.env.template
+application-local.yml
+application-local.yaml
+application-local.properties
+application-*.local.yml
+application-*.local.yaml
+application-*.local.properties
+/backend/data-service/src/main/resources/application.yml
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Editor temporary files.
+*.swp
+*.swo
+*~

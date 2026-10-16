@@ -1,0 +1,15 @@
+server:
+  port: ${TIANTAN_DATA_SERVICE_PORT:8081}
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  servlet:
+    multipart:
+      location: ${TIANTAN_STORAGE_TEMP:/epfs/TianTanSystem/tmp}/data-service
+
+storage:
+  root-path: ${TIANTAN_STORAGE_ROOT:/epfs/TianTanSystem/data}
+  temp-path: ${TIANTAN_STORAGE_TEMP:/epfs/TianTanSystem/tmp}
+  nginx-base-url: ${TIANTAN_STORAGE_PUBLIC_BASE:}

@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  codec:
+    # Multipart 请求采用磁盘临时文件转发，避免大压缩包整体进入网关内存。
+    max-in-memory-size: 1MB
+  webflux:
+    multipart:
+      max-in-memory-size: 1MB
+      max-disk-usage-per-part: ${TIANTAN_MAX_UPLOAD_SIZE:20GB}
+      # Use an absolute Windows-safe fallback so IDEA instances started before
+      # the environment variables were added do not fall back to the project
+      # directory. The environment variable still takes precedence.
+      file-storage-directory: ${TIANTAN_STORAGE_TEMP:D:/TiantanTemp}/gateway
+      max-parts: 10000
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 3600000
+        response-timeout: 3600000
+        websocket:
+          max-frame-payload-length: 10485760
+        pool:
+          type: elastic
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - HEAD
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            exposedHeaders: "Content-Length,Content-Range,Accept-Ranges,ETag"
+            maxAge: 3600
+      routes:
+        - id: data-service
+          uri: http://127.0.0.1:8081
+          predicates:
+            - Path=/api/data/**
+        - id: scheduling-service
+          uri: http://127.0.0.1:8083
+          predicates:
+            - Path=/api/scheduling/**

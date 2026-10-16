@@ -1,0 +1,29 @@
+{
+  "name": "web-lod",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/prepare-gaussian-viewer.mjs && vite",
+    "build": "node scripts/prepare-gaussian-viewer.mjs && vite build",
+    "test": "node --test tests/*.test.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "echarts": "6.1.0",
+    "element-plus": "^2.14.1",
+    "potree-core": "2.0.15",
+    "three": "0.160.1",
+    "vue": "^3.5.32",
+    "vue-router": "^5.0.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.6",
+    "vite": "^8.0.8",
+    "vite-plugin-vue-devtools": "^8.1.1"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

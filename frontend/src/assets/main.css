@@ -1,0 +1,10 @@
+@import './base.css';
+
+#app { overflow: hidden; }
+
+.el-button { border-radius: 4px; font-weight: 500; }
+.el-button--default { color: #c5d9e1; background: rgba(143,190,210,.08); border-color: rgba(143,190,210,.25); }
+.el-button--default:hover { color: var(--ui-cyan); border-color: var(--ui-cyan); background: rgba(85,214,230,.1); }
+.el-button--primary { color: #06202a; border-color: var(--ui-cyan); background: var(--ui-cyan); }.el-button--primary:hover { color: #06202a; border-color: #85e4ef; background: #85e4ef; }
+.el-segmented { padding: 3px; border: 1px solid var(--ui-border); border-radius: 5px; background: rgba(4,17,27,.55); }.el-segmented .el-segmented__item { color: var(--ui-muted); }.el-segmented .el-segmented__item-selected { color: #06202a; background: var(--ui-cyan); box-shadow: none; }
+.el-tag { border-radius: 3px; }.el-progress-bar__outer { background: rgba(143,190,210,.12); }.el-empty__description p { color: var(--ui-muted); }

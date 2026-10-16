@@ -1,0 +1,39 @@
+:root {
+  --ui-bg: #07131f;
+  --ui-surface: #0b1a27;
+  --ui-surface-2: #102334;
+  --ui-surface-3: #142b3c;
+  --ui-border: rgba(143, 190, 210, .18);
+  --ui-border-strong: rgba(85, 214, 230, .34);
+  --ui-text: #e8f1f5;
+  --ui-muted: #8fa8b5;
+  --ui-cyan: #55d6e6;
+  --ui-cyan-deep: #159aaf;
+  --ui-amber: #f2b35b;
+  --ui-success: #56d69a;
+  --ui-danger: #ef767a;
+  --el-color-primary: #35bfd1;
+  --el-color-success: #56d69a;
+  --el-color-warning: #f2b35b;
+  --el-color-danger: #ef767a;
+  --el-color-info: #7d9ba8;
+  --el-bg-color: #102334;
+  --el-bg-color-overlay: #142b3c;
+  --el-fill-color-blank: #102334;
+  --el-fill-color-light: rgba(143, 190, 210, .08);
+  --el-fill-color: rgba(143, 190, 210, .12);
+  --el-text-color-primary: #e8f1f5;
+  --el-text-color-regular: #b5c9d1;
+  --el-text-color-secondary: #8fa8b5;
+  --el-border-color: rgba(143, 190, 210, .2);
+  --el-border-color-light: rgba(143, 190, 210, .14);
+  --el-mask-color: rgba(2, 10, 16, .72);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #app { width: 100%; min-width: 0; height: 100%; min-height: 0; margin: 0; }
+body { overflow: hidden; color: var(--ui-text); background: var(--ui-bg); font-family: Inter, "Microsoft YaHei UI", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+button, input, select, textarea { font: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--ui-cyan); outline-offset: 2px; }
+::selection { color: #05202a; background: rgba(85,214,230,.8); }
+::-webkit-scrollbar { width: 8px; height: 8px; } ::-webkit-scrollbar-track { background: rgba(5,18,28,.35); } ::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 6px; background: rgba(143,190,210,.34); background-clip: padding-box; } ::-webkit-scrollbar-thumb:hover { background-color: rgba(85,214,230,.55); }

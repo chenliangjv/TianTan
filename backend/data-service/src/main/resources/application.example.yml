@@ -1,0 +1,41 @@
+server:
+  port: 8081
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,image/svg+xml
+  tomcat:
+    protocol: org.apache.coyote.http11.Http11Nio2Protocol
+    connection-timeout: 3600000
+
+spring:
+  application:
+    name: data-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/tiantan_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      connection-timeout: 60000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  servlet:
+    multipart:
+      max-file-size: ${TIANTAN_MAX_UPLOAD_SIZE:20GB}
+      max-request-size: ${TIANTAN_MAX_REQUEST_SIZE:20GB}
+      file-size-threshold: 1MB
+      location: ${storage.temp-path}
+
+storage:
+  root-path: ${TIANTAN_STORAGE_ROOT:D:/TiantanData}
+  temp-path: ${TIANTAN_STORAGE_TEMP:D:/TiantanTemp}
+  nginx-base-url:
