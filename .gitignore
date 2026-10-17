@@ -2,7 +2,7 @@
 /*
 !/.gitignore
 !/*.md
-!/frontend/
+!/frontendcg/
 !/backend/
 
 # Dependencies, caches, and build output.

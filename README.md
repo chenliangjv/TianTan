@@ -5,7 +5,7 @@
 ## 目录
 
 - `backend`：Spring Boot 多模块后端，仅含 Gateway、数据服务和 LOD 调度服务
-- `frontend`：Vue 3 + Vite 前端
+- `frontendcg`：Vue 3 + Vite 前端
 - `模型数据`：天坛 LOD/GLB 原始数据
 - `参考代码`：原始设计参考，不参与构建和运行
 
@@ -29,7 +29,7 @@ $env:SPRING_DATASOURCE_PASSWORD = "your-local-database-password"
 
 可通过 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME` 和 `SPRING_DATASOURCE_PASSWORD` 覆盖连接信息。实际 `application.yml` 已被 Git 忽略，请勿提交真实密码。
 
-仓库提交 `frontend`、`backend` 和项目说明文档；依赖目录、构建产物、网关中生成的前端静态文件、本地数据、备份及参考工程均不入库。高斯查看器所需的 Spark 2.2.0 / Three.js 0.180.0 及许可证随前端保存，无需额外克隆 `Pro/spark-main`；本地存在该参考工程及其依赖时，准备脚本仍会校验版本并同步。
+仓库提交 `frontendcg`、`backend` 和项目说明文档；旧 `frontend`、依赖目录、构建产物、网关中生成的前端静态文件、本地数据、备份及参考工程均不入库。高斯查看器所需的 Spark 2.2.0 / Three.js 0.180.0 及许可证已保存在 `frontendcg/public/gaussian-viewer`，无需额外克隆 `Pro/spark-main`。
 
 ## 启动后端
 
@@ -68,7 +68,7 @@ GET  /api/data/statistics
 
 ## 设计图图像入库与预览
 
-更新代码后需要重启数据服务（8081），JPA 会自动创建 `design_image` 表。进入“数据管理 → 设计图”，点击“导入 4 张示例图”，即可将 `frontend/public/yq1.png`～`yq4.png` 通过正常上传接口入库；也可多选本地 PNG/JPG/JPEG 文件。示例导入是显式操作，不会在打开页面时自动写库。
+更新代码后需要重启数据服务（8081），JPA 会自动创建 `design_image` 表。在“数据管理”选择设计图类型上传，或在“设计图预览”上传本地 PNG/JPG/JPEG 文件。`frontendcg/public/assets/yq1.png` 为随前端保存的图像资源；打开页面不会自动将其入库。
 
 每批最多 20 张，单张最大 20 MB、4000 万像素；后端校验实际文件格式并按 SHA-256 内容去重。数据库保存名称、格式、尺寸、大小、内容哈希、存储标识和入库时间；原件及 360 像素以内的缩略图保存在 `${storage.root-path}/design-images/<UUID>/`，默认根目录为 `D:/TiantanData`。批次逐张处理，部分失败不影响成功项。删除操作仅移除入库记录和后端副本，不删除 public 中的样例源文件。
 
@@ -82,7 +82,7 @@ GET    /api/data/design-images/{id}/thumbnail
 DELETE /api/data/design-images/{id}
 ```
 
-验证：`mvn -f backend/data-service/pom.xml test` 使用内存 H2 和系统临时目录测试图像入库，不连接业务 MySQL；前端在 `frontend` 下执行 `node --test tests/*.test.js`。
+验证：`mvn -f backend/data-service/pom.xml test` 使用内存 H2 和系统临时目录测试图像入库，不连接业务 MySQL；前端在 `frontendcg` 下执行 `pnpm build`。当前前端未配置独立的测试命令。
 
 ## 信息统计
 
@@ -94,15 +94,15 @@ DELETE /api/data/design-images/{id}
 - “现存资产入库时间分布”按北京时间每日补零；天数仅筛选此图，不影响全量指标。硬删除会同时移除时间分布中的对应资产，不把它当作历史事件日志。
 - 异步任务仅统计 MODEL、POINT_CLOUD、GAUSSIAN 的排队、运行、成功、失败状态；设计图是同步上传，不计入任务图。
 
-后端使用数据库聚合与只读一致性事务，不读取完整文件列表、不扫描 RAD/PLY 文件。前端 ECharts 按需注册并随统计路由懒加载；离页销毁图表，支持侧栏变化和窗口缩放。进入页面、手动刷新或窗口重新聚焦（距上次刷新超过 30 秒）时重新取数，不常驻轮询。入库或删除后返回统计页即可看到新快照。
+后端使用数据库聚合与只读一致性事务，不读取完整文件列表、不扫描 RAD/PLY 文件。`frontendcg` 在进入统计页、手动刷新或切换 7/30/90 天时重新取数。入库或删除后返回统计页即可看到新快照。
 
-回归测试：后端 `StatisticsIntegrationTest` 使用内存 H2，不连接业务 MySQL；前端 `npm test` 包含图表数据测试。可选 `node tests/statistics-browser.mjs <playwright模块绝对路径> [截图目录]` 使用独立随机端口和测试数据检查页面、跳转、7/30/90 天、空数据、异常重试及响应式布局，不操作运行中的服务。
+回归测试：后端 `StatisticsIntegrationTest` 使用内存 H2，不连接业务 MySQL。前端可在启动后检查 `/stats` 页面及 7/30/90 天筛选。
 
 ## 点云颜色控制
 
 在“点云展示 → 场景控制 → 点云颜色”切换原始 RGB 或单色显示。两种模式均支持亮度、对比度和 Gamma，并共用调节参数；单色模式通过取色器或预设色选择基础颜色，再应用调节。默认参数保持原始 RGB 或所选单色不变。纯白等极值颜色对部分参数可能不敏感，可选择中间色观察效果。“恢复默认”仅重置颜色，不改变相机。设置在当前页面内切换、卸载重载数据集时保留，刷新或离开页面后恢复默认，不写入数据库或原始文件。
 
-颜色通过 GPU 材质 uniform 更新，保留原生 Potree LOD 调度和 HTTP Range 加载。适配层针对固定版本 `potree-core 2.0.15` 的 Potree 2.0 RGBA 着色器；升级依赖时需重新验证默认 RGB、单色像素和 EDL。若着色器结构不兼容，禁用调色并保留原生显示。前端材质回归测试：在 `frontend` 目录执行 `node --test tests/pointCloudColor.test.js`。
+颜色通过 GPU 材质 uniform 更新，保留原生 Potree LOD 调度和 HTTP Range 加载。适配层针对固定版本 `potree-core 2.0.15` 的 Potree 2.0 RGBA 着色器；升级依赖时需重新验证默认 RGB、单色像素和 EDL。若着色器结构不兼容，禁用调色并保留原生显示。当前前端适配层位于 `frontendcg/src/utils/pointCloudColor.js`。
 
 ## 三维视图操作
 
@@ -113,15 +113,15 @@ DELETE /api/data/design-images/{id}
 ## 启动前端
 
 ```powershell
-cd frontend
+cd frontendcg
 pnpm install
 pnpm dev
 ```
 
-开发服务器地址为 `http://127.0.0.1:5173/`。`/api`、`/uploads` 和 WebSocket 会代理到 Gateway `8080`。生产构建：
+开发服务器默认地址为 `http://127.0.0.1:5173/`，端口占用时以 Vite 输出为准。`/api` 及该路径下的 WebSocket 会代理到 Gateway `8080`。生产构建：
 
 ```powershell
 pnpm build
 ```
 
-保留路由：`/`、`/lod2`、`/pointcloud`、`/gaussian`、`/design`、`/data-import`、`/data-stats`。
+页面路由：`/`、`/model`、`/pointcloud`、`/gaussian`、`/design`、`/manage`、`/stats`。
